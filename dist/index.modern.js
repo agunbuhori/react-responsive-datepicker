@@ -1,68 +1,44 @@
 import { memo, useState, useRef, useEffect, createElement } from 'react';
 
-var styles = {"darkbox":"_3curk","fadeIn":"_3uImN","lightbox":"_3cxVN","zoomIn":"_J_W1U","header":"_1aDvk","title":"_2KezC","nav":"_oZdUT","selector":"_yof3Q","prevNext":"_3gTMH","navButton":"_2s7Q2","monthName":"_NWZcI","year":"_38Og6","days":"_3KAu7","calendar":"_1yUS2","date":"_1hglr","outside":"_2La4E","inside":"_1sbNu","footer":"_24OKz","zoomOut":"_31Z79","fadeOut":"_3y6_k"};
+var styles = {"darkbox":"_styles-module__darkbox__3curk","fadeIn":"_styles-module__fadeIn__3uImN","lightbox":"_styles-module__lightbox__3cxVN","zoomIn":"_styles-module__zoomIn__J_W1U","header":"_styles-module__header__1aDvk","title":"_styles-module__title__2KezC","nav":"_styles-module__nav__oZdUT","selector":"_styles-module__selector__yof3Q","prevNext":"_styles-module__prevNext__3gTMH","navButton":"_styles-module__navButton__2s7Q2","monthName":"_styles-module__monthName__NWZcI","year":"_styles-module__year__38Og6","days":"_styles-module__days__3KAu7","calendar":"_styles-module__calendar__1yUS2","date":"_styles-module__date__1hglr","outside":"_styles-module__outside__2La4E","inside":"_styles-module__inside__1sbNu","footer":"_styles-module__footer__24OKz","zoomOut":"_styles-module__zoomOut__31Z79","fadeOut":"_styles-module__fadeOut__3y6_k"};
 
-var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-var OLD_YEAR = 1970;
-var MAX_YEAR = new Date().getFullYear() + 3;
+const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const OLD_YEAR = 1970;
+const MAX_YEAR = new Date().getFullYear() + 3;
 
-var DatePicker = function DatePicker(_ref) {
-  var showCalendar = _ref.isOpen,
-      onClose = _ref.onClose,
-      title = _ref.title,
-      dayNames = _ref.dayNames,
-      headerFormat = _ref.headerFormat,
-      _ref$showTitle = _ref.showTitle,
-      showTitle = _ref$showTitle === void 0 ? true : _ref$showTitle,
-      monthNames = _ref.monthNames,
-      defaultValue = _ref.defaultValue,
-      _ref$minDate = _ref.minDate,
-      minDate = _ref$minDate === void 0 ? new Date(OLD_YEAR, 0, 1) : _ref$minDate,
-      _ref$maxDate = _ref.maxDate,
-      maxDate = _ref$maxDate === void 0 ? new Date(MAX_YEAR, 11, 31) : _ref$maxDate,
-      _ref$colorScheme = _ref.colorScheme,
-      colorScheme = _ref$colorScheme === void 0 ? '#4527A0' : _ref$colorScheme,
-      _ref$headerTextColor = _ref.headerTextColor,
-      headerTextColor = _ref$headerTextColor === void 0 ? '#fff' : _ref$headerTextColor,
-      _ref$closeText = _ref.closeText,
-      closeText = _ref$closeText === void 0 ? 'Close' : _ref$closeText,
-      _ref$clearText = _ref.clearText,
-      clearText = _ref$clearText === void 0 ? 'Clear' : _ref$clearText,
-      onChange = _ref.onChange;
+const DatePicker = ({
+  isOpen: showCalendar,
+  onClose,
+  title,
+  dayNames,
+  headerFormat,
+  showTitle: _showTitle = true,
+  monthNames,
+  defaultValue,
+  minDate: _minDate = new Date(OLD_YEAR, 0, 1),
+  maxDate: _maxDate = new Date(MAX_YEAR, 11, 31),
+  colorScheme: _colorScheme = '#4527A0',
+  headerTextColor: _headerTextColor = '#fff',
+  closeText: _closeText = 'Close',
+  clearText: _clearText = 'Clear',
+  onChange,
+  showFooter: _showFooter = true,
+  showHeader: _showHeader = true
+}) => {
+  const [isOpen, setIsOpen] = useState(showCalendar);
+  const [calendar, setCalendar] = useState([]);
+  const [days] = useState((dayNames === null || dayNames === void 0 ? void 0 : dayNames.length) === 7 ? dayNames : DAY_NAMES);
+  const [months] = useState((monthNames === null || monthNames === void 0 ? void 0 : monthNames.length) === 12 ? monthNames : MONTH_NAMES);
+  const [month, setMonth] = useState(0);
+  const [year, setYear] = useState(2022);
+  const [selectedDate, setSelectedDate] = useState(defaultValue || null);
+  const dbRef = useRef(null);
+  const lbRef = useRef(null);
 
-  var _React$useState = useState(showCalendar),
-      isOpen = _React$useState[0],
-      setIsOpen = _React$useState[1];
-
-  var _React$useState2 = useState([]),
-      calendar = _React$useState2[0],
-      setCalendar = _React$useState2[1];
-
-  var _React$useState3 = useState((dayNames === null || dayNames === void 0 ? void 0 : dayNames.length) === 7 ? dayNames : DAY_NAMES),
-      days = _React$useState3[0];
-
-  var _React$useState4 = useState((monthNames === null || monthNames === void 0 ? void 0 : monthNames.length) === 12 ? monthNames : MONTH_NAMES),
-      months = _React$useState4[0];
-
-  var _React$useState5 = useState(0),
-      month = _React$useState5[0],
-      setMonth = _React$useState5[1];
-
-  var _React$useState6 = useState(2022),
-      year = _React$useState6[0],
-      setYear = _React$useState6[1];
-
-  var _React$useState7 = useState(defaultValue || null),
-      selectedDate = _React$useState7[0],
-      setSelectedDate = _React$useState7[1];
-
-  var dbRef = useRef(null);
-  var lbRef = useRef(null);
-
-  var changeMonth = function changeMonth(inc) {
-    var curMonth = month + inc;
-    var curYear = year;
+  const changeMonth = inc => {
+    let curMonth = month + inc;
+    let curYear = year;
 
     if (curMonth === 12) {
       curMonth = 0;
@@ -76,22 +52,22 @@ var DatePicker = function DatePicker(_ref) {
     setYear(curYear);
   };
 
-  var selectDate = function selectDate(day) {
+  const selectDate = day => {
     setMonth(day.getMonth());
     setYear(day.getFullYear());
     setSelectedDate(day);
     onChange && onChange(day);
   };
 
-  var getHeader = function getHeader() {
-    var backup = new Date();
-    var dayName = days[(selectedDate === null || selectedDate === void 0 ? void 0 : selectedDate.getDay()) || backup.getDay()];
-    var dateNum = selectedDate ? selectedDate.getDate() : backup.getDate();
-    var date = dateNum < 10 ? "0" + dateNum : dateNum.toString();
-    var monthName = months[(selectedDate === null || selectedDate === void 0 ? void 0 : selectedDate.getMonth()) || backup.getMonth()];
-    var monthNum = (selectedDate ? selectedDate.getMonth() : backup.getMonth()) + 1;
-    var monthWithZero = monthNum < 10 ? "0" + monthNum : monthNum.toString();
-    var result = headerFormat || 'DD, MM dd';
+  const getHeader = () => {
+    const backup = new Date();
+    const dayName = days[(selectedDate === null || selectedDate === void 0 ? void 0 : selectedDate.getDay()) || backup.getDay()];
+    const dateNum = selectedDate ? selectedDate.getDate() : backup.getDate();
+    const date = dateNum < 10 ? `0${dateNum}` : dateNum.toString();
+    const monthName = months[(selectedDate === null || selectedDate === void 0 ? void 0 : selectedDate.getMonth()) || backup.getMonth()];
+    const monthNum = (selectedDate ? selectedDate.getMonth() : backup.getMonth()) + 1;
+    const monthWithZero = monthNum < 10 ? `0${monthNum}` : monthNum.toString();
+    let result = headerFormat || 'DD, MM dd';
     result = result.replaceAll('D', '_D');
     result = result.replaceAll('M', '_M');
     result = result.replaceAll('d', '_d');
@@ -107,17 +83,17 @@ var DatePicker = function DatePicker(_ref) {
     return result;
   };
 
-  var handleClear = function handleClear() {
+  const handleClear = () => {
     setSelectedDate(null);
     onChange && onChange(null);
   };
 
-  var handleClose = function handleClose() {
+  const handleClose = () => {
     var _dbRef$current, _lbRef$current;
 
     (_dbRef$current = dbRef.current) === null || _dbRef$current === void 0 ? void 0 : _dbRef$current.classList.add(styles.fadeOut);
     (_lbRef$current = lbRef.current) === null || _lbRef$current === void 0 ? void 0 : _lbRef$current.classList.add(styles.zoomOut);
-    setTimeout(function () {
+    setTimeout(() => {
       var _dbRef$current2, _lbRef$current2;
 
       setIsOpen(false);
@@ -127,28 +103,28 @@ var DatePicker = function DatePicker(_ref) {
     }, 300);
   };
 
-  useEffect(function () {
-    var firstDayThisMonth = new Date(year, month, 1).getDay();
-    var temp = [];
+  useEffect(() => {
+    const firstDayThisMonth = new Date(year, month, 1).getDay();
+    const temp = [];
 
-    for (var i = 0; i < 42; i++) {
-      var date = new Date(year, month, i - firstDayThisMonth + 1);
+    for (let i = 0; i < 42; i++) {
+      const date = new Date(year, month, i - firstDayThisMonth + 1);
       temp.push(date);
     }
 
     setCalendar(temp);
   }, [month, year]);
-  useEffect(function () {
+  useEffect(() => {
     if (defaultValue) {
-      if (defaultValue.getTime() < minDate.getTime()) {
-        setMonth(minDate.getMonth());
-        setSelectedDate(minDate);
+      if (defaultValue.getTime() < _minDate.getTime()) {
+        setMonth(_minDate.getMonth());
+        setSelectedDate(_minDate);
       } else {
         setMonth(defaultValue.getMonth());
       }
     }
   }, []);
-  useEffect(function () {
+  useEffect(() => {
     setIsOpen(showCalendar);
   }, [showCalendar]);
 
@@ -162,13 +138,13 @@ var DatePicker = function DatePicker(_ref) {
   }, createElement("div", {
     className: styles.lightbox,
     ref: lbRef
-  }, createElement("div", {
+  }, _showHeader && createElement("div", {
     className: styles.header,
     style: {
-      backgroundColor: colorScheme,
-      color: headerTextColor
+      backgroundColor: _colorScheme,
+      color: _headerTextColor
     }
-  }, showTitle && createElement("h4", {
+  }, _showTitle && createElement("h4", {
     className: styles.title
   }, title || 'Select Date'), createElement("span", {
     className: styles.monthName
@@ -179,33 +155,23 @@ var DatePicker = function DatePicker(_ref) {
   }, createElement("div", {
     className: styles.selector
   }, createElement("select", {
-    onChange: function onChange(e) {
-      return setMonth(parseInt(e.target.value));
-    },
+    onChange: e => setMonth(parseInt(e.target.value)),
     value: month
-  }, months.map(function (monthName, index) {
-    return createElement("option", {
-      key: index,
-      value: index
-    }, monthName);
-  })), createElement("select", {
-    onChange: function onChange(e) {
-      return setYear(parseInt(e.target.value));
-    },
+  }, months.map((monthName, index) => createElement("option", {
+    key: index,
+    value: index
+  }, monthName))), createElement("select", {
+    onChange: e => setYear(parseInt(e.target.value)),
     value: year
-  }, Array(maxDate.getFullYear() - minDate.getFullYear() + 1).fill(0).map(function (_, index) {
-    return createElement("option", {
-      key: index,
-      value: maxDate.getFullYear() - index
-    }, maxDate.getFullYear() - index);
-  }))), createElement("div", {
+  }, Array(_maxDate.getFullYear() - _minDate.getFullYear() + 1).fill(0).map((_, index) => createElement("option", {
+    key: index,
+    value: _maxDate.getFullYear() - index
+  }, _maxDate.getFullYear() - index)))), createElement("div", {
     className: styles.prevNext
   }, createElement("button", {
-    disabled: minDate.getFullYear() === year && minDate.getMonth() === month,
+    disabled: _minDate.getFullYear() === year && _minDate.getMonth() === month,
     className: styles.navButton,
-    onClick: function onClick() {
-      return changeMonth(-1);
-    }
+    onClick: () => changeMonth(-1)
   }, createElement("svg", {
     width: 24,
     height: 24,
@@ -220,11 +186,9 @@ var DatePicker = function DatePicker(_ref) {
     strokeLinejoin: 'round',
     d: 'M15 19l-7-7 7-7'
   }))), createElement("button", {
-    disabled: maxDate.getFullYear() === year && maxDate.getMonth() === month,
+    disabled: _maxDate.getFullYear() === year && _maxDate.getMonth() === month,
     className: styles.navButton,
-    onClick: function onClick() {
-      return changeMonth(+1);
-    }
+    onClick: () => changeMonth(+1)
   }, createElement("svg", {
     width: 24,
     height: 24,
@@ -242,41 +206,35 @@ var DatePicker = function DatePicker(_ref) {
     className: styles.body
   }, createElement("div", {
     className: styles.days
-  }, days.map(function (day) {
-    return createElement("div", {
-      className: styles.day,
-      key: day
-    }, day.substring(0, 3));
-  })), createElement("div", {
+  }, days.map(day => createElement("div", {
+    className: styles.day,
+    key: day
+  }, day.substring(0, 3)))), createElement("div", {
     className: styles.calendar
-  }, calendar.map(function (day, index) {
-    return createElement("div", {
-      className: [styles.date, day.getMonth() === month ? styles.inside : styles.outside].join(' '),
-      key: index
-    }, createElement("button", {
-      style: {
-        backgroundColor: (selectedDate === null || selectedDate === void 0 ? void 0 : selectedDate.getTime()) === day.getTime() ? colorScheme : '#fff',
-        color: (selectedDate === null || selectedDate === void 0 ? void 0 : selectedDate.getTime()) === day.getTime() ? '#fff' : '#000'
-      },
-      onClick: function onClick() {
-        return selectDate(day);
-      },
-      disabled: day.getTime() < minDate.getTime() || day.getTime() > maxDate.getTime()
-    }, day.getDate()));
-  }))), createElement("div", {
+  }, calendar.map((day, index) => createElement("div", {
+    className: [styles.date, day.getMonth() === month ? styles.inside : styles.outside].join(' '),
+    key: index
+  }, createElement("button", {
+    style: {
+      backgroundColor: (selectedDate === null || selectedDate === void 0 ? void 0 : selectedDate.getTime()) === day.getTime() ? _colorScheme : '#fff',
+      color: (selectedDate === null || selectedDate === void 0 ? void 0 : selectedDate.getTime()) === day.getTime() ? '#fff' : '#000'
+    },
+    onClick: () => selectDate(day),
+    disabled: day.getTime() < _minDate.getTime() || day.getTime() > _maxDate.getTime()
+  }, day.getDate()))))), _showFooter && createElement("div", {
     className: styles.footer
   }, createElement("button", {
     disabled: !selectedDate,
     onClick: handleClear,
     style: {
-      color: colorScheme
+      color: _colorScheme
     }
-  }, clearText), createElement("button", {
+  }, _clearText), createElement("button", {
     style: {
-      color: colorScheme
+      color: _colorScheme
     },
     onClick: handleClose
-  }, closeText))));
+  }, _closeText))));
 };
 
 var DatePicker$1 = memo(DatePicker);
