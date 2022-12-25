@@ -1,6 +1,6 @@
 var React = require('react');
 
-var styles = {"darkbox":"_styles-module__darkbox__3curk","fadeIn":"_styles-module__fadeIn__3uImN","lightbox":"_styles-module__lightbox__3cxVN","zoomIn":"_styles-module__zoomIn__J_W1U","header":"_styles-module__header__1aDvk","title":"_styles-module__title__2KezC","nav":"_styles-module__nav__oZdUT","selector":"_styles-module__selector__yof3Q","prevNext":"_styles-module__prevNext__3gTMH","navButton":"_styles-module__navButton__2s7Q2","monthName":"_styles-module__monthName__NWZcI","year":"_styles-module__year__38Og6","days":"_styles-module__days__3KAu7","calendar":"_styles-module__calendar__1yUS2","date":"_styles-module__date__1hglr","outside":"_styles-module__outside__2La4E","inside":"_styles-module__inside__1sbNu","footer":"_styles-module__footer__24OKz","zoomOut":"_styles-module__zoomOut__31Z79","fadeOut":"_styles-module__fadeOut__3y6_k"};
+var styles = {"darkbox":"_3curk","fadeIn":"_3uImN","lightbox":"_3cxVN","zoomIn":"_J_W1U","header":"_1aDvk","title":"_2KezC","nav":"_oZdUT","selector":"_yof3Q","prevNext":"_3gTMH","navButton":"_2s7Q2","monthName":"_NWZcI","year":"_38Og6","days":"_3KAu7","calendar":"_1yUS2","date":"_1hglr","outside":"_2La4E","inside":"_1sbNu","footer":"_24OKz","zoomOut":"_31Z79","fadeOut":"_3y6_k"};
 
 var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
