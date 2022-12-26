@@ -34,8 +34,7 @@ var DatePicker = function DatePicker(_ref) {
       showFooter = _ref$showFooter === void 0 ? true : _ref$showFooter,
       _ref$showHeader = _ref.showHeader,
       showHeader = _ref$showHeader === void 0 ? true : _ref$showHeader,
-      _ref$clickOutsideToCl = _ref.clickOutsideToClose,
-      clickOutsideToClose = _ref$clickOutsideToCl === void 0 ? false : _ref$clickOutsideToCl;
+      clickOutsideToClose = _ref.clickOutsideToClose;
 
   var _React$useState = useState(showCalendar),
       isOpen = _React$useState[0],
@@ -152,6 +151,7 @@ var DatePicker = function DatePicker(_ref) {
         if ((_dbRef$current3 = dbRef.current) !== null && _dbRef$current3 !== void 0 && _dbRef$current3.contains(event.target) && !((_lbRef$current3 = lbRef.current) !== null && _lbRef$current3 !== void 0 && _lbRef$current3.contains(event.target))) {
           event.stopPropagation();
           handleClose();
+          clickOutsideToClose();
         }
       });
     }
