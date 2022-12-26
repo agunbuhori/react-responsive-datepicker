@@ -33,7 +33,9 @@ var DatePicker = function DatePicker(_ref) {
       _ref$showFooter = _ref.showFooter,
       showFooter = _ref$showFooter === void 0 ? true : _ref$showFooter,
       _ref$showHeader = _ref.showHeader,
-      showHeader = _ref$showHeader === void 0 ? true : _ref$showHeader;
+      showHeader = _ref$showHeader === void 0 ? true : _ref$showHeader,
+      _ref$clickOutsideToCl = _ref.clickOutsideToClose,
+      clickOutsideToClose = _ref$clickOutsideToCl === void 0 ? false : _ref$clickOutsideToCl;
 
   var _React$useState = React.useState(showCalendar),
       isOpen = _React$useState[0],
@@ -142,6 +144,18 @@ var DatePicker = function DatePicker(_ref) {
 
     setCalendar(temp);
   }, [month, year]);
+  React.useEffect(function () {
+    if (clickOutsideToClose) {
+      document.addEventListener('click', function (event) {
+        var _dbRef$current3, _lbRef$current3;
+
+        if ((_dbRef$current3 = dbRef.current) !== null && _dbRef$current3 !== void 0 && _dbRef$current3.contains(event.target) && !((_lbRef$current3 = lbRef.current) !== null && _lbRef$current3 !== void 0 && _lbRef$current3.contains(event.target))) {
+          event.stopPropagation();
+          handleClose();
+        }
+      });
+    }
+  }, []);
   React.useEffect(function () {
     if (defaultValue) {
       if (defaultValue.getTime() < minDate.getTime()) {

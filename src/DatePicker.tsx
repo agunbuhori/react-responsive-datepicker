@@ -20,6 +20,7 @@ interface Props {
   onChange?: (date: Date | null) => void
   showFooter?: boolean
   showHeader?: boolean
+  clickOutsideToClose?: boolean
 }
 
 const DAY_NAMES = [
@@ -65,7 +66,8 @@ const DatePicker = ({
   clearText = 'Clear',
   onChange,
   showFooter = true,
-  showHeader = true
+  showHeader = true,
+  clickOutsideToClose = false
 }: Props) => {
   const [isOpen, setIsOpen] = React.useState(showCalendar)
   const [calendar, setCalendar] = React.useState<Date[]>([])
@@ -164,6 +166,20 @@ const DatePicker = ({
 
     setCalendar(temp)
   }, [month, year])
+
+  React.useEffect(() => {
+    if (clickOutsideToClose) {
+      document.addEventListener('click', (event: MouseEvent) => {
+        if (
+          dbRef.current?.contains(event.target as Node) &&
+          !lbRef.current?.contains(event.target as Node)
+        ) {
+          event.stopPropagation()
+          handleClose()
+        }
+      })
+    }
+  }, [])
 
   React.useEffect(() => {
     if (defaultValue) {

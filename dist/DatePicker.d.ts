@@ -17,6 +17,7 @@ interface Props {
     onChange?: (date: Date | null) => void;
     showFooter?: boolean;
     showHeader?: boolean;
+    clickOutsideToClose?: boolean;
 }
-declare const _default: React.MemoExoticComponent<({ isOpen: showCalendar, onClose, title, dayNames, headerFormat, showTitle, monthNames, defaultValue, minDate, maxDate, colorScheme, headerTextColor, closeText, clearText, onChange, showFooter, showHeader }: Props) => JSX.Element | null>;
+declare const _default: React.MemoExoticComponent<({ isOpen: showCalendar, onClose, title, dayNames, headerFormat, showTitle, monthNames, defaultValue, minDate, maxDate, colorScheme, headerTextColor, closeText, clearText, onChange, showFooter, showHeader, clickOutsideToClose }: Props) => JSX.Element | null>;
 export default _default;
