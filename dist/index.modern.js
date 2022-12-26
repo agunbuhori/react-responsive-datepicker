@@ -147,6 +147,8 @@ var DatePicker = function DatePicker(_ref) {
     document.addEventListener('click', function (event) {
       var _dbRef$current3, _lbRef$current3;
 
+      console.log('clicked', event.target);
+
       if ((_dbRef$current3 = dbRef.current) !== null && _dbRef$current3 !== void 0 && _dbRef$current3.contains(event.target) && !((_lbRef$current3 = lbRef.current) !== null && _lbRef$current3 !== void 0 && _lbRef$current3.contains(event.target))) {
         event.stopPropagation();
         handleClose();

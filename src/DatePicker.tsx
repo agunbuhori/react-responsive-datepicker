@@ -169,6 +169,7 @@ const DatePicker = ({
 
   React.useEffect(() => {
     document.addEventListener('click', (event: MouseEvent) => {
+      console.log('clicked', event.target)
       if (
         dbRef.current?.contains(event.target as Node) &&
         !lbRef.current?.contains(event.target as Node)
