@@ -168,18 +168,16 @@ const DatePicker = ({
   }, [month, year])
 
   React.useEffect(() => {
-    if (clickOutsideToClose) {
-      document.addEventListener('click', (event: MouseEvent) => {
-        if (
-          dbRef.current?.contains(event.target as Node) &&
-          !lbRef.current?.contains(event.target as Node)
-        ) {
-          event.stopPropagation()
-          handleClose()
-          clickOutsideToClose()
-        }
-      })
-    }
+    document.addEventListener('click', (event: MouseEvent) => {
+      if (
+        dbRef.current?.contains(event.target as Node) &&
+        !lbRef.current?.contains(event.target as Node)
+      ) {
+        event.stopPropagation()
+        handleClose()
+        clickOutsideToClose && clickOutsideToClose()
+      }
+    })
   }, [])
 
   React.useEffect(() => {
