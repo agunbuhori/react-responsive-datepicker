@@ -77,7 +77,7 @@ These are the props to custom your datepicker.
 | headerFormat|❌ | `Date format` |  
 | monthNames | ❌| `string[]`|english month names|
 | dayNames | ❌| `string[]`|english day names|
-| headerBackgroundColor | ❌| `string`|purple|
+| colorScheme | ❌| `string`|purple|
 
 ## Date Formats
 - _D_ to show short day name, etc. Sun, Tue.
