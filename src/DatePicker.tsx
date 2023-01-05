@@ -18,6 +18,9 @@ interface Props {
   clearText?: string
   onClose?: () => void
   onChange?: (date: Date | null) => void
+  showFooter?: boolean
+  showHeader?: boolean
+  clickOutsideToClose?: () => void
 }
 
 const DAY_NAMES = [
@@ -61,7 +64,10 @@ const DatePicker = ({
   headerTextColor = '#fff',
   closeText = 'Close',
   clearText = 'Clear',
-  onChange
+  onChange,
+  showFooter = true,
+  showHeader = true,
+  clickOutsideToClose
 }: Props) => {
   const [isOpen, setIsOpen] = React.useState(showCalendar)
   const [calendar, setCalendar] = React.useState<Date[]>([])
@@ -162,6 +168,20 @@ const DatePicker = ({
   }, [month, year])
 
   React.useEffect(() => {
+    document.addEventListener('click', (event: MouseEvent) => {
+      console.log('clicked', event.target)
+      if (
+        dbRef.current?.contains(event.target as Node) &&
+        !lbRef.current?.contains(event.target as Node)
+      ) {
+        event.stopPropagation()
+        handleClose()
+        clickOutsideToClose && clickOutsideToClose()
+      }
+    })
+  }, [])
+
+  React.useEffect(() => {
     if (defaultValue) {
       if (defaultValue.getTime() < minDate.getTime()) {
         setMonth(minDate.getMonth())
@@ -183,22 +203,24 @@ const DatePicker = ({
   return (
     <div className={styles.darkbox} ref={dbRef}>
       <div className={styles.lightbox} ref={lbRef}>
-        <div
-          className={styles.header}
-          style={{
-            backgroundColor: colorScheme,
-            color: headerTextColor
-          }}
-        >
-          {showTitle && (
-            <h4 className={styles.title}>{title || 'Select Date'}</h4>
-          )}
-          <span className={styles.monthName}>{getHeader()}</span>
-          <br />
-          <span className={styles.year}>
-            {selectedDate ? selectedDate.getFullYear() : year}
-          </span>
-        </div>
+        {showHeader && (
+          <div
+            className={styles.header}
+            style={{
+              backgroundColor: colorScheme,
+              color: headerTextColor
+            }}
+          >
+            {showTitle && (
+              <h4 className={styles.title}>{title || 'Select Date'}</h4>
+            )}
+            <span className={styles.monthName}>{getHeader()}</span>
+            <br />
+            <span className={styles.year}>
+              {selectedDate ? selectedDate.getFullYear() : year}
+            </span>
+          </div>
+        )}
 
         <div className={styles.nav}>
           <div className={styles.selector}>
@@ -318,18 +340,20 @@ const DatePicker = ({
           </div>
         </div>
 
-        <div className={styles.footer}>
-          <button
-            disabled={!selectedDate}
-            onClick={handleClear}
-            style={{ color: colorScheme }}
-          >
-            {clearText}
-          </button>
-          <button style={{ color: colorScheme }} onClick={handleClose}>
-            {closeText}
-          </button>
-        </div>
+        {showFooter && (
+          <div className={styles.footer}>
+            <button
+              disabled={!selectedDate}
+              onClick={handleClear}
+              style={{ color: colorScheme }}
+            >
+              {clearText}
+            </button>
+            <button style={{ color: colorScheme }} onClick={handleClose}>
+              {closeText}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

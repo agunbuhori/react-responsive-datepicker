@@ -29,7 +29,12 @@ var DatePicker = function DatePicker(_ref) {
       closeText = _ref$closeText === void 0 ? 'Close' : _ref$closeText,
       _ref$clearText = _ref.clearText,
       clearText = _ref$clearText === void 0 ? 'Clear' : _ref$clearText,
-      onChange = _ref.onChange;
+      onChange = _ref.onChange,
+      _ref$showFooter = _ref.showFooter,
+      showFooter = _ref$showFooter === void 0 ? true : _ref$showFooter,
+      _ref$showHeader = _ref.showHeader,
+      showHeader = _ref$showHeader === void 0 ? true : _ref$showHeader,
+      clickOutsideToClose = _ref.clickOutsideToClose;
 
   var _React$useState = useState(showCalendar),
       isOpen = _React$useState[0],
@@ -139,6 +144,19 @@ var DatePicker = function DatePicker(_ref) {
     setCalendar(temp);
   }, [month, year]);
   useEffect(function () {
+    document.addEventListener('click', function (event) {
+      var _dbRef$current3, _lbRef$current3;
+
+      console.log('clicked', event.target);
+
+      if ((_dbRef$current3 = dbRef.current) !== null && _dbRef$current3 !== void 0 && _dbRef$current3.contains(event.target) && !((_lbRef$current3 = lbRef.current) !== null && _lbRef$current3 !== void 0 && _lbRef$current3.contains(event.target))) {
+        event.stopPropagation();
+        handleClose();
+        clickOutsideToClose && clickOutsideToClose();
+      }
+    });
+  }, []);
+  useEffect(function () {
     if (defaultValue) {
       if (defaultValue.getTime() < minDate.getTime()) {
         setMonth(minDate.getMonth());
@@ -162,7 +180,7 @@ var DatePicker = function DatePicker(_ref) {
   }, createElement("div", {
     className: styles.lightbox,
     ref: lbRef
-  }, createElement("div", {
+  }, showHeader && createElement("div", {
     className: styles.header,
     style: {
       backgroundColor: colorScheme,
@@ -263,7 +281,7 @@ var DatePicker = function DatePicker(_ref) {
       },
       disabled: day.getTime() < minDate.getTime() || day.getTime() > maxDate.getTime()
     }, day.getDate()));
-  }))), createElement("div", {
+  }))), showFooter && createElement("div", {
     className: styles.footer
   }, createElement("button", {
     disabled: !selectedDate,

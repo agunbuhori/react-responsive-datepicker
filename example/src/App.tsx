@@ -6,6 +6,9 @@ import 'react-responsive-datepicker/dist/index.css'
 const App = () => {
   const [isOpen, setIsOpen] = React.useState(false)
 
+  const handleClose = () => {
+    setIsOpen(false)
+  }
   return (
     <div>
       <button
@@ -22,6 +25,7 @@ const App = () => {
         minDate={new Date(2022, 10, 10)}
         maxDate={new Date(2023, 0, 10)}
         headerFormat='DD, MM dd'
+        clickOutsideToClose={handleClose}
       />
     </div>
   )
