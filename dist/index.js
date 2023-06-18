@@ -156,16 +156,20 @@ var DatePicker = function DatePicker(_ref) {
       }
     });
   }, []);
+
   React.useEffect(function () {
     if (defaultValue) {
       if (defaultValue.getTime() < minDate.getTime()) {
         setMonth(minDate.getMonth());
+        setYear(minDate.getFullYear());
         setSelectedDate(minDate);
       } else {
         setMonth(defaultValue.getMonth());
+        setYear(defaultValue.getFullYear());
       }
     }
   }, []);
+
   React.useEffect(function () {
     setIsOpen(showCalendar);
   }, [showCalendar]);
